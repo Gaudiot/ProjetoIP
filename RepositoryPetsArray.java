@@ -7,25 +7,21 @@ public class RepositoryPetsArray implements RepositoryPets{
 	private int indice;
 	
 	public RepositoryPetsArray() {
+		this.pets = new Pets[100];
 		this.indice = 0;
 	}
 
-	public void insert(Pets pet) throws PetTypeNotFound, PetAlreadyExists {
-		//checa o tipo
-		if(pet.getType().equals("Fairy") || pet.getType().equals("Elf") || pet.getType().equals("Platypus") || 
-				pet.getType().equals("Dragon") || pet.getType().equals("Ogre") || pet.getType().equals("Wolf")) {
-			//checa se ja existe
-			if(!exists(pet.getOwner(), pet.getName())) {
-				this.pets[indice] = pet;
-				this.indice++;
-			}else {
-				PetAlreadyExists error = new PetAlreadyExists();
-				throw error;
+	public void insert(Pets pet){
+		if(this.indice >= pets.length()){
+			private Pets[] temp = new Pets[pets.length() + 100];
+			for(int i = 0 ; i < pets.length() ; i++){
+				temp[i] = pets[i];
 			}
-		}else {
-			PetTypeNotFound error = new PetTypeNotFound();
-			throw error;
+
+			this.pets = temp;
 		}
+		this.pets[indice] = pet;
+		this.indice++;
 	}
 
 	public void update(Pets pet) throws PetNotFound, PetTypeNotFound {
@@ -46,22 +42,16 @@ public class RepositoryPetsArray implements RepositoryPets{
 		}
 	}
 
-	public void remove(String owner, String name) throws PetNotFound {
-		if(exists(owner, name)) {
-			int i = getIndice(owner, name);
-			for(int f = i ; f < indice - 1 ; f++) {
-				this.pets[f] = this.pets[f+1];
-			}
-			
-			this.pets[indice - 1] = null;
-			this.indice--;
-		}else {
-			PetNotFound error = new PetNotFound();
-			throw error;
+	public void remove(String owner, String name){
+		int i = getIndice(owner, name);
+		for(int f = i ; f < indice - 1 ; f++) {
+			this.pets[f] = this.pets[f+1];
 		}
+		this.pets[indice - 1] = null;
+		this.indice--;
 	}
 
-	public Pets find(String owner, String name) throws PetNotFound {
+	public Pets find(String owner, String name){
 		Pets pet = null;
 		boolean found = false;
 		
@@ -70,11 +60,6 @@ public class RepositoryPetsArray implements RepositoryPets{
 				pet = this.pets[f];
 				found = true;
 			}
-		}
-		
-		if(pet == null){
-			PetNotFound error = new PetNotFound();
-			throw error;
 		}
 		return pet;
 	}

@@ -14,19 +14,44 @@ public class SignupPets {
         }
     }
 
-    public void signup(Pets pet)
+    public void insert(Pets pet)
             throws PetAlreadyExists, PetTypeNotFound {
-        this.pets.insert(pet);
+        //checa o tipo
+		if(pet.getType().equals("Fairy") || pet.getType().equals("Elf") || pet.getType().equals("Platypus") || 
+				pet.getType().equals("Dragon") || pet.getType().equals("Ogre") || pet.getType().equals("Wolf")) {
+			//checa se ja existe
+			if(!exists(pet.getOwner(), pet.getName())) {
+				this.pets.insert(pet);
+			}else {
+				PetAlreadyExists error = new PetAlreadyExists();
+				throw error;
+			}
+		}else {
+			PetTypeNotFound error = new PetTypeNotFound();
+			throw error;
+		}
     }
 
     public void remove(String owner, String name)
             throws PetNotFound {
-        this.pets.remove(owner, name);;
+        if(exists(owner, name)) {
+			this.pets.remove(owner, name);
+		}else {
+			PetNotFound error = new PetNotFound();
+			throw error;
+		}
     }
 
     public Pets find(String owner, String name)
             throws PetNotFound {
-        return this.pets.find(owner, name);
+        if(this.pets.exists(owner, name)) {
+			if(this.pets.getOwner().equals(owner) && this.pets.getName().equals(name)) {
+				return this.pets.find(owner, name);
+			}
+		}else {
+			PetNotFound error = new PetNotFound();
+			throw error;
+		}
     }
 
     public void update(Pets pet)
