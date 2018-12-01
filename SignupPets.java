@@ -56,7 +56,18 @@ public class SignupPets {
 
     public void update(Pets pet)
             throws PetNotFound, PetTypeNotFound {
-        this.pets.update(pet);
+	if(this.pets.exists(pet.getOwner(), pet.getName())){
+	    	if(pet.getType().equals("Fairy") || pet.getType().equals("Elf") || pet.getType().equals("Platypus") || 
+				pet.getType().equals("Dragon") || pet.getType().equals("Ogre") || pet.getType().equals("Wolf")){
+			this.pets.update(pet);
+		}else{
+			PetTypeNotFound error = new PetTypeNotFound();
+			throw error;
+		}
+	}else{
+		PetNotFound error = new PetNotFound();
+		throw error;	
+	}
     }
 
     public boolean exists(String owner, String name) {
