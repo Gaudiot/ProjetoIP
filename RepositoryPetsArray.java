@@ -25,21 +25,8 @@ public class RepositoryPetsArray implements RepositoryPets{
 	}
 
 	public void update(Pets pet) throws PetNotFound, PetTypeNotFound {
-		//checa o tipo
-		if(pet.getType().equals("Fairy") || pet.getType().equals("Elf") || pet.getType().equals("Platypus") || 
-				pet.getType().equals("Dragon") || pet.getType().equals("Ogre") || pet.getType().equals("Wolf")) {
-			//checa se ja existe
-			if(exists(pet.getOwner(), pet.getName())) {
-				int i = getIndice(pet.getOwner(), pet.getName());
-				this.pets[i] = pet;
-			}else {
-				PetNotFound error = new PetNotFound();
-				throw error;
-			}
-		}else {
-			PetTypeNotFound error = new PetTypeNotFound();
-			throw error;
-		}
+		int i = getIndice(pet.getOwner(), pet.getName());
+		this.pets[i] = pet;
 	}
 
 	public void remove(String owner, String name){
