@@ -21,17 +21,10 @@ public class RepositoryPetsList implements RepositoryPets{
 	}
 
 	public void update(Pets pet) throws PetNotFound, PetTypeNotFound {
-		if(pet.getType().equals("Fairy") || pet.getType().equals("Elf") || pet.getType().equals("Platypus") || 
-				pet.getType().equals("Dragon") || pet.getType().equals("Ogre") || pet.getType().equals("Wolf")) {
-			if(exists(pet.getOwner(), pet.getName())) {
-				
-			}else {
-				PetNotFound error = new PetNotFound();
-				throw error;
-			}
+		if(this.pets.getOwner().equals(pet.getOwner()) && this.pets.getName().equals(pet.getName())) {
+			this.pets = pet;
 		}else {
-			PetTypeNotFound error = new PetTypeNotFound();
-			throw error;
+			this.next.update(owner, name);
 		}
 	}
 
